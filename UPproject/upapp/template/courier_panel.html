@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Курьер</title>
+
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .top {
+            border-bottom: 1px solid #777;
+            padding: 15px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top a {
+            color: white;
+            text-decoration: none;
+            font-size: 30px;
+        }
+
+        .top h1 { margin: 0; font-size: 42px; }
+
+        .container { padding: 25px; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .order-card {
+            background: #333;
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 220px;
+        }
+
+        .card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-select { background: #2563eb; color: white; }
+        .btn-confirm { background: #16a34a; color: white; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-new { background: #2563eb; color: white; }
+        .status-check { background: #7c3aed; color: white; }
+        .status-formed { background: #f59e0b; color: black; }
+        .status-cooking { background: #fb923c; color: black; }
+        .status-courier { background: #059669; color: white; }
+        .status-delivery { background: #06b6d4; color: black; }
+        .status-done { background: #16a34a; color: white; }
+        .status-default { background: #555; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <a href="/index/">Назад</a>
+    <h1>Курьер</h1>
+</div>
+
+<div class="container">
+
+    <h3>1. Просмотр список заказов</h3>
+
+    <div class="cards">
+        {% for order in orders %}
+        <div class="order-card">
+
+            <div class="card-head">
+                <h3>Заказ №{{ order.id }}</h3>
+
+                <span class="status-badge
+                    {% if order.status == 'Новый' %}status-new
+                    {% elif order.status == 'Проверен' %}status-check
+                    {% elif order.status == 'Сформирован' %}status-formed
+                    {% elif order.status == 'Готовится' %}status-cooking
+                    {% elif order.status == 'Передан курьеру' %}status-courier
+                    {% elif order.status == 'В доставке' %}status-delivery
+                    {% elif order.status == 'Доставлен' %}status-done
+                    {% else %}status-default
+                    {% endif %}">
+                    {{ order.status }}
+                </span>
+            </div>
+
+            <p>Ул. {{ order.client.delivery_address }}</p>
+            <p>ФИО: {{ order.client.full_name }}</p>
+            <p>Время: {{ order.order_date }}</p>
+            <p>Цена: {{ order.total_price }}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" value="{{ order.id }}">
+                <button type="submit" name="action" value="select" class="btn btn-select">
+                    Выбрать
+                </button>
+            </form>
+
+        </div>
+        {% empty %}
+        <p>Назначенных заказов нет.</p>
+        {% endfor %}
+    </div>
+
+    <h3 style="margin-top: 50px;">2. Подтвердить доставку и изменить статус</h3>
+
+    <div class="cards">
+        {% if selected_order %}
+        <div class="order-card">
+
+            <div class="card-head">
+                <h3>Заказ №{{ selected_order.id }}</h3>
+
+                <span class="status-badge
+                    {% if selected_order.status == 'Новый' %}status-new
+                    {% elif selected_order.status == 'Проверен' %}status-check
+                    {% elif selected_order.status == 'Сформирован' %}status-formed
+                    {% elif selected_order.status == 'Готовится' %}status-cooking
+                    {% elif selected_order.status == 'Передан курьеру' %}status-courier
+                    {% elif selected_order.status == 'В доставке' %}status-delivery
+                    {% elif selected_order.status == 'Доставлен' %}status-done
+                    {% else %}status-default
+                    {% endif %}">
+                    {{ selected_order.status }}
+                </span>
+            </div>
+
+            <p>Ул. {{ selected_order.client.delivery_address }}</p>
+            <p>ФИО: {{ selected_order.client.full_name }}</p>
+            <p>Время: {{ selected_order.order_date }}</p>
+            <p>Цена: {{ selected_order.total_price }}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" value="{{ selected_order.id }}">
+                <button type="submit" name="action" value="confirm" class="btn btn-confirm">
+                    Подтвердить
+                </button>
+            </form>
+
+        </div>
+        {% else %}
+        <p>Выберите заказ из первого блока.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

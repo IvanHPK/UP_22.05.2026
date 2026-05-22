@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сотрудник ресторана</title>
+
+    <style>
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .top {
+            border-bottom: 1px solid #777;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top a {
+            color: white;
+            text-decoration: none;
+            font-size: 26px;
+        }
+
+        .container {
+            padding: 25px;
+        }
+
+        .block {
+            border: 1px solid #777;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .order-card {
+            border: 1px solid #777;
+            background: #181818;
+            padding: 20px;
+            min-height: 170px;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: #111;
+            color: white;
+            border: 1px solid #555;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 7px;
+            padding: 9px 22px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-check { background: #2563eb; color: white; }
+        .btn-form { background: #16a34a; color: white; }
+        .btn-assign { background: #7c3aed; color: white; }
+        .btn-status { background: #f59e0b; color: black; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-new { background: #2563eb; color: white; }
+        .status-check { background: #7c3aed; color: white; }
+        .status-formed { background: #f59e0b; color: black; }
+        .status-cooking { background: #fb923c; color: black; }
+        .status-courier { background: #059669; color: white; }
+        .status-delivery { background: #06b6d4; color: black; }
+        .status-done { background: #16a34a; color: white; }
+        .status-default { background: #555; color: white; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        td, th {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .status-form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-form select {
+            width: 220px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <a href="/index/">Назад</a>
+    <h2>Сотрудник ресторана</h2>
+</div>
+
+<div class="container">
+
+    <div class="block">
+        <b>Входящие заказы</b>
+
+        <div class="cards">
+            {% for order in orders %}
+            <div class="order-card">
+                <b>Заказ #{{ order.id }}</b>
+
+                <p>
+                    Статус:
+                    <span class="status-badge
+                        {% if order.status == 'Новый' %}status-new
+                        {% elif order.status == 'Проверен' %}status-check
+                        {% elif order.status == 'Сформирован' %}status-formed
+                        {% elif order.status == 'Готовится' %}status-cooking
+                        {% elif order.status == 'Передан курьеру' %}status-courier
+                        {% elif order.status == 'В доставке' %}status-delivery
+                        {% elif order.status == 'Доставлен' %}status-done
+                        {% else %}status-default
+                        {% endif %}">
+                        {{ order.status }}
+                    </span>
+                </p>
+
+                <p>Сумма: {{ order.total_price }} ₽</p>
+                <p>Доставка: Да</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="check">
+                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                    <button class="btn btn-check">Проверить</button>
+                </form>
+            </div>
+            {% empty %}
+            <p>Заказов пока нет.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col block">
+            <b>Проверить / Сформировать заказ</b>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="form">
+
+                <label>Заказ</label>
+                <select name="order_id">
+                    {% for order in orders %}
+                    <option value="{{ order.id }}">Заказ №{{ order.id }} — {{ order.client.full_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <button class="btn btn-form">Сформировать заказ</button>
+            </form>
+        </div>
+
+        <div class="col block">
+            <b>Назначить курьера</b>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="assign">
+
+                <label>Заказ</label>
+                <select name="order_id">
+                    {% for order in orders %}
+                    <option value="{{ order.id }}">Заказ №{{ order.id }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Курьер</label>
+                <select name="courier_id">
+                    {% for courier in couriers %}
+                    <option value="{{ courier.id }}">{{ courier.full_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <button class="btn btn-assign">Назначить</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="block">
+        <b>Список заказов</b>
+
+        <table>
+            <tr>
+                <th>№ заказа</th>
+                <th>Клиент</th>
+                <th>Сумма</th>
+                <th>Доставка</th>
+                <th>Статус</th>
+                <th>Курьер</th>
+                <th>Действия</th>
+            </tr>
+
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.client.full_name }}</td>
+                <td>{{ order.total_price }} ₽</td>
+                <td>Да</td>
+                <td>
+                    <span class="status-badge
+                        {% if order.status == 'Новый' %}status-new
+                        {% elif order.status == 'Проверен' %}status-check
+                        {% elif order.status == 'Сформирован' %}status-formed
+                        {% elif order.status == 'Готовится' %}status-cooking
+                        {% elif order.status == 'Передан курьеру' %}status-courier
+                        {% elif order.status == 'В доставке' %}status-delivery
+                        {% elif order.status == 'Доставлен' %}status-done
+                        {% else %}status-default
+                        {% endif %}">
+                        {{ order.status }}
+                    </span>
+                </td>
+                <td>
+                    {% if order.courier %}
+                        {{ order.courier.full_name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post" class="status-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+
+                        <select name="status">
+                            <option value="Новый" {% if order.status == "Новый" %}selected{% endif %}>Новый</option>
+                            <option value="Проверен" {% if order.status == "Проверен" %}selected{% endif %}>Проверен</option>
+                            <option value="Сформирован" {% if order.status == "Сформирован" %}selected{% endif %}>Сформирован</option>
+                            <option value="Готовится" {% if order.status == "Готовится" %}selected{% endif %}>Готовится</option>
+                            <option value="Передан курьеру" {% if order.status == "Передан курьеру" %}selected{% endif %}>Передан курьеру</option>
+                            <option value="В доставке" {% if order.status == "В доставке" %}selected{% endif %}>В доставке</option>
+                            <option value="Доставлен" {% if order.status == "Доставлен" %}selected{% endif %}>Доставлен</option>
+                        </select>
+
+                        <button type="submit" name="action" value="change_status" class="btn btn-status">
+                            Изменить статус
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

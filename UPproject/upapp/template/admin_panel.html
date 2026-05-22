@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Администратор</title>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+        }
+
+        .top {
+            height: 80px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 25px;
+            padding-right: 35px;
+        }
+
+        .top a {
+            background: #333;
+            color: white;
+            text-decoration: none;
+            padding: 10px 28px;
+            font-size: 22px;
+        }
+
+        .top a:hover { background: #444; }
+
+        .title {
+            font-size: 32px;
+            margin-left: 25px;
+        }
+
+        .page { display: flex; }
+
+        .side {
+            width: 85px;
+            border-right: 1px solid #444;
+            min-height: 100vh;
+            text-align: center;
+            padding-top: 30px;
+        }
+
+        .side a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 35px;
+            font-size: 16px;
+        }
+
+        .side a:hover { color: #60a5fa; }
+
+        .content { width: 100%; }
+
+        .section {
+            padding: 35px;
+            min-height: 430px;
+        }
+
+        .menu-area {
+            display: grid;
+            grid-template-columns: repeat(3, 280px);
+            gap: 55px 110px;
+            justify-content: center;
+        }
+
+        .card-box {
+            width: 280px;
+            min-height: 340px;
+            background: #333;
+            border-radius: 15px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #3b3b3b;
+            color: #d0d0d0;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 7px 15px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover { background: #4a4a4a; }
+
+        .dish-photo {
+            width: 100%;
+            height: 135px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 45px;
+            margin-bottom: 15px;
+        }
+
+        .card-box p { margin: 8px 0; }
+
+        .price {
+            font-size: 23px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .orders-block {
+            border-top: 1px solid #444;
+            min-height: 360px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-new { background: #2563eb; color: white; }
+        .status-check { background: #7c3aed; color: white; }
+        .status-formed { background: #f59e0b; color: black; }
+        .status-cooking { background: #fb923c; color: black; }
+        .status-courier { background: #059669; color: white; }
+        .status-delivery { background: #06b6d4; color: black; }
+        .status-done { background: #16a34a; color: white; }
+        .status-default { background: #555; color: white; }
+
+        .empty { font-size: 20px; }
+
+        @media (max-width: 1200px) {
+            .menu-area {
+                grid-template-columns: repeat(2, 280px);
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .menu-area { grid-template-columns: 280px; }
+
+            .top {
+                height: auto;
+                padding: 15px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <a href="/menu-edit/">Меню. ред.</a>
+    <a href="/orders-edit/">Заказы ред.</a>
+    <a href="/clients/">Клиенты</a>
+    <a href="/couriers/">Курьеры</a>
+    <a href="/employees/">Сотрудники</a>
+    <div class="title">Администратор</div>
+</div>
+
+<div class="page">
+
+    <div class="side">
+        <a href="#menu">Меню</a>
+        <a href="#orders">Заказы</a>
+    </div>
+
+    <div class="content">
+
+        <div id="menu" class="section">
+            <div class="menu-area">
+
+                {% for dish in dishes %}
+                <div class="card-box">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="delete_dish">
+                        <input type="hidden" name="dish_id" value="{{ dish.id }}">
+                        <button class="delete-btn">Удалить</button>
+                    </form>
+
+                    {% if "Борщ" in dish.name %}
+                        <a href="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80" alt="Борщ">
+                        </a>
+                    {% elif "Пицца" in dish.name %}
+                        <a href="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" alt="Пицца">
+                        </a>
+                    {% elif "Паста" in dish.name or "Карбонара" in dish.name %}
+                        <a href="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80" alt="Паста">
+                        </a>
+                    {% elif "Цезарь" in dish.name %}
+                        <a href="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Салат">
+                        </a>
+                    {% elif "Чизкейк" in dish.name %}
+                        <a href="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80" alt="Чизкейк">
+                        </a>
+                    {% elif "Морс" in dish.name %}
+                        <a href="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80" alt="Морс">
+                        </a>
+                    {% else %}
+                        <a href="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" target="_blank">
+                            <img class="dish-photo" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Блюдо">
+                        </a>
+                    {% endif %}
+
+                    <p><b>Название:</b> {{ dish.name }}</p>
+                    <p><b>Описание:</b> {{ dish.description }}</p>
+                    <p><b>Статус:</b> {{ dish.status }}</p>
+                    <p class="price">Цена: {{ dish.price }}</p>
+
+                </div>
+                {% empty %}
+                <p class="empty">Блюда пока не добавлены.</p>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div id="orders" class="section orders-block">
+            <div class="menu-area">
+
+                {% for order in orders %}
+                <div class="card-box">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="delete_order">
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <button class="delete-btn">Удалить</button>
+                    </form>
+
+                    <a href="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" target="_blank">
+                        <img class="dish-photo" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Заказ">
+                    </a>
+
+                    <p><b>ФИО:</b> {{ order.client.full_name }}</p>
+                    <p><b>Название:</b> Заказ №{{ order.id }}</p>
+
+                    <p>
+                        <b>Статус:</b>
+                        <span class="status-badge
+                            {% if order.status == 'Новый' %}status-new
+                            {% elif order.status == 'Проверен' %}status-check
+                            {% elif order.status == 'Сформирован' %}status-formed
+                            {% elif order.status == 'Готовится' %}status-cooking
+                            {% elif order.status == 'Передан курьеру' %}status-courier
+                            {% elif order.status == 'В доставке' %}status-delivery
+                            {% elif order.status == 'Доставлен' %}status-done
+                            {% else %}status-default
+                            {% endif %}">
+                            {{ order.status }}
+                        </span>
+                    </p>
+
+                    {% if order.courier %}
+                        <p><b>Курьер:</b> {{ order.courier.full_name }}</p>
+                    {% else %}
+                        <p><b>Курьер:</b> не назначен</p>
+                    {% endif %}
+
+                    <p class="price">Цена: {{ order.total_price }}</p>
+
+                </div>
+                {% empty %}
+                <p class="empty">Заказов пока нет.</p>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

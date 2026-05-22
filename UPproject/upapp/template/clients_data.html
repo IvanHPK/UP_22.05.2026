@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Данные о клиентах</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .top {
+            border-bottom: 1px solid #777;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top a {
+            color: white;
+            text-decoration: none;
+            font-size: 28px;
+        }
+
+        .box {
+            width: 90%;
+            max-width: 1350px;
+            background: #333;
+            margin: 70px auto;
+            padding: 45px 35px;
+            min-height: 650px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) 120px 135px;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            background: #3b3b3b;
+            color: white;
+            border: none;
+            padding: 14px 12px;
+            font-size: 16px;
+            min-width: 0;
+        }
+
+        .btn {
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 18px;
+            padding: 9px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-save {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+        .btn-delete {
+            background: #1f1f1f;
+            color: #cfcfcf;
+            border: 1px solid #555;
+        }
+
+        .btn-delete:hover {
+            background: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <a href="/admin-panel/">Назад</a>
+    <h2>Данные о клиентах</h2>
+</div>
+
+<div class="box">
+    {% for client in clients %}
+    <form method="post" class="row">
+        {% csrf_token %}
+
+        <input type="hidden" name="client_id" value="{{ client.id }}">
+
+        <input name="full_name" value="{{ client.full_name }}">
+        <input name="email" value="{{ client.email }}">
+        <input name="phone" value="{{ client.phone }}">
+        <input name="delivery_address" value="{{ client.delivery_address }}">
+
+        <button name="action" value="update" class="btn btn-save">
+            Изменить
+        </button>
+
+        <button name="action" value="delete" class="btn btn-delete">
+            Удалить запись
+        </button>
+    </form>
+    {% empty %}
+    <p>Клиенты пока не добавлены.</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

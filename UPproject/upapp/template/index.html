@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница клиента</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .top {
+            height: 70px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+        }
+
+        .cabinet-btn {
+            background: #3f3f46;
+            color: white;
+            text-decoration: none;
+            padding: 10px 28px;
+            border-radius: 22px;
+            font-size: 20px;
+        }
+
+        .cabinet-btn:hover {
+            background: #52525b;
+        }
+
+        .client-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 45px 60px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 280px);
+            gap: 55px 90px;
+            justify-content: center;
+        }
+
+        .dish-card {
+            background: #333;
+            border-radius: 18px;
+            padding: 18px;
+            min-height: 360px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .dish-photo {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .dish-card p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #86efac;
+            margin-top: 12px;
+        }
+
+        .select-btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 24px;
+            margin-top: 14px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .select-btn:hover {
+            background: #6d28d9;
+        }
+
+        .order-box {
+            width: 520px;
+            background: #333;
+            margin: 80px auto 40px auto;
+            padding: 35px;
+            border-radius: 22px;
+            text-align: center;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .order-box h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .order-box input {
+            width: 90%;
+            height: 42px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            padding-left: 15px;
+            font-size: 17px;
+            background: #f1f1f1;
+            color: black;
+        }
+
+        .selected-dish {
+            background: #1f2937;
+            border: 1px solid #4b5563;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 15px auto;
+            width: 90%;
+            color: #86efac;
+            font-weight: bold;
+        }
+
+        .order-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 35px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .order-btn:hover {
+            background: #047857;
+        }
+
+        .empty {
+            text-align: center;
+            font-size: 22px;
+        }
+
+        @media (max-width: 1100px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 280px);
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .menu-grid {
+                grid-template-columns: 280px;
+            }
+
+            .order-box {
+                width: 85%;
+            }
+
+            .top {
+                height: auto;
+                padding: 20px;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <a href="/account/" class="cabinet-btn">Личный кабинет</a>
+
+    <div class="client-name">
+        {% if client %}
+            {{ client.full_name }}
+        {% else %}
+            Гость
+        {% endif %}
+    </div>
+</div>
+
+<div class="content">
+
+    <div class="menu-grid">
+
+        {% for dish in dishes %}
+        <div class="dish-card">
+
+            {% if "Борщ" in dish.name %}
+                <a href="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80" alt="Борщ">
+                </a>
+
+            {% elif "Пицца" in dish.name %}
+                <a href="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" alt="Пицца">
+                </a>
+
+            {% elif "Паста" in dish.name or "Карбонара" in dish.name %}
+                <a href="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80" alt="Паста">
+                </a>
+
+            {% elif "Цезарь" in dish.name %}
+                <a href="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="Салат">
+                </a>
+
+            {% elif "Чизкейк" in dish.name %}
+                <a href="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80" alt="Чизкейк">
+                </a>
+
+            {% elif "Морс" in dish.name %}
+                <a href="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80" alt="Морс">
+                </a>
+
+            {% else %}
+                <a href="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" target="_blank">
+                    <img class="dish-photo" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Блюдо">
+                </a>
+            {% endif %}
+
+            <p><b>Название:</b> {{ dish.name }}</p>
+            <p><b>Описание:</b> {{ dish.description }}</p>
+            <p><b>Статус:</b> {{ dish.status }}</p>
+            <p class="price">Цена: {{ dish.price }} ₽</p>
+
+            <button type="button"
+                    class="select-btn"
+                    onclick="chooseDish('{{ dish.id }}', '{{ dish.name }}')">
+                Выбрать
+            </button>
+
+        </div>
+        {% empty %}
+        <p class="empty">Блюда пока не добавлены.</p>
+        {% endfor %}
+
+    </div>
+
+    <div class="order-box">
+        <h2>Данные для оформления заказа</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="dish_id" id="dish_id">
+
+            <input type="text" name="full_name" placeholder="ФИО" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="phone" placeholder="Телефон" required>
+            <input type="text" name="delivery_address" placeholder="Адрес доставки" required>
+
+            <div class="selected-dish" id="selected_dish">
+                Блюдо не выбрано
+            </div>
+
+            <button type="submit" class="order-btn">
+                Оформить заказ
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    function chooseDish(id, name) {
+        document.getElementById('dish_id').value = id;
+        document.getElementById('selected_dish').innerText = 'Выбрано блюдо: ' + name;
+    }
+</script>
+
+</body>
+</html>
