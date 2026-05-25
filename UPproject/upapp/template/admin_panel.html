@@ -7,16 +7,108 @@
     <style>
         html { scroll-behavior: smooth; }
 
+        :root {
+            --bg: #111111;
+            --panel: #333333;
+            --panel-soft: #3b3b3b;
+            --text: #ffffff;
+            --text-muted: #d0d0d0;
+            --border: #444444;
+
+            --nav-bg: #333333;
+            --nav-bg-hover: #444444;
+            --nav-text: #ffffff;
+
+            --delete-bg: #3b3b3b;
+            --delete-bg-hover: #4a4a4a;
+            --delete-text: #d0d0d0;
+            --delete-border: #555555;
+
+            --link-hover: #a78bfa;
+            --price: #ffffff;
+
+            --status-new-bg: #7c3aed;
+            --status-new-text: #ffffff;
+
+            --status-check-bg: #8b5cf6;
+            --status-check-text: #ffffff;
+
+            --status-formed-bg: #f59e0b;
+            --status-formed-text: #111111;
+
+            --status-cooking-bg: #fb923c;
+            --status-cooking-text: #111111;
+
+            --status-courier-bg: #0d9488;
+            --status-courier-text: #ffffff;
+
+            --status-delivery-bg: #06b6d4;
+            --status-delivery-text: #111111;
+
+            --status-done-bg: #16a34a;
+            --status-done-text: #ffffff;
+
+            --status-default-bg: #555555;
+            --status-default-text: #ffffff;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f5f5;
+                --panel: #ffffff;
+                --panel-soft: #eeeeee;
+                --text: #111111;
+                --text-muted: #444444;
+                --border: #bdbdbd;
+
+                --nav-bg: #e5e5e5;
+                --nav-bg-hover: #d4d4d4;
+                --nav-text: #111111;
+
+                --delete-bg: #eeeeee;
+                --delete-bg-hover: #e0e0e0;
+                --delete-text: #333333;
+                --delete-border: #aaaaaa;
+
+                --link-hover: #7c3aed;
+                --price: #111111;
+
+                --status-new-bg: #7c3aed;
+                --status-new-text: #ffffff;
+
+                --status-check-bg: #8b5cf6;
+                --status-check-text: #ffffff;
+
+                --status-formed-bg: #f59e0b;
+                --status-formed-text: #111111;
+
+                --status-cooking-bg: #fb923c;
+                --status-cooking-text: #111111;
+
+                --status-courier-bg: #0d9488;
+                --status-courier-text: #ffffff;
+
+                --status-delivery-bg: #06b6d4;
+                --status-delivery-text: #111111;
+
+                --status-done-bg: #15803d;
+                --status-done-text: #ffffff;
+
+                --status-default-bg: #777777;
+                --status-default-text: #ffffff;
+            }
+        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
+            background: var(--bg);
+            color: var(--text);
         }
 
         .top {
             height: 80px;
-            border-bottom: 1px solid #444;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -25,14 +117,14 @@
         }
 
         .top a {
-            background: #333;
-            color: white;
+            background: var(--nav-bg);
+            color: var(--nav-text);
             text-decoration: none;
             padding: 10px 28px;
             font-size: 22px;
         }
 
-        .top a:hover { background: #444; }
+        .top a:hover { background: var(--nav-bg-hover); }
 
         .title {
             font-size: 32px;
@@ -43,7 +135,7 @@
 
         .side {
             width: 85px;
-            border-right: 1px solid #444;
+            border-right: 1px solid var(--border);
             min-height: 100vh;
             text-align: center;
             padding-top: 30px;
@@ -51,13 +143,13 @@
 
         .side a {
             display: block;
-            color: white;
+            color: var(--text);
             text-decoration: none;
             margin-bottom: 35px;
             font-size: 16px;
         }
 
-        .side a:hover { color: #60a5fa; }
+        .side a:hover { color: var(--link-hover); }
 
         .content { width: 100%; }
 
@@ -76,7 +168,7 @@
         .card-box {
             width: 280px;
             min-height: 340px;
-            background: #333;
+            background: var(--panel);
             border-radius: 15px;
             padding: 15px;
             position: relative;
@@ -86,15 +178,15 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: #3b3b3b;
-            color: #d0d0d0;
-            border: 1px solid #555;
+            background: var(--delete-bg);
+            color: var(--delete-text);
+            border: 1px solid var(--delete-border);
             border-radius: 5px;
             padding: 7px 15px;
             cursor: pointer;
         }
 
-        .delete-btn:hover { background: #4a4a4a; }
+        .delete-btn:hover { background: var(--delete-bg-hover); }
 
         .dish-photo {
             width: 100%;
@@ -111,10 +203,11 @@
             font-size: 23px;
             font-weight: bold;
             margin-top: 15px;
+            color: var(--price);
         }
 
         .orders-block {
-            border-top: 1px solid #444;
+            border-top: 1px solid var(--border);
             min-height: 360px;
         }
 
@@ -126,16 +219,50 @@
             font-size: 14px;
         }
 
-        .status-new { background: #2563eb; color: white; }
-        .status-check { background: #7c3aed; color: white; }
-        .status-formed { background: #f59e0b; color: black; }
-        .status-cooking { background: #fb923c; color: black; }
-        .status-courier { background: #059669; color: white; }
-        .status-delivery { background: #06b6d4; color: black; }
-        .status-done { background: #16a34a; color: white; }
-        .status-default { background: #555; color: white; }
+        .status-new {
+            background: var(--status-new-bg);
+            color: var(--status-new-text);
+        }
 
-        .empty { font-size: 20px; }
+        .status-check {
+            background: var(--status-check-bg);
+            color: var(--status-check-text);
+        }
+
+        .status-formed {
+            background: var(--status-formed-bg);
+            color: var(--status-formed-text);
+        }
+
+        .status-cooking {
+            background: var(--status-cooking-bg);
+            color: var(--status-cooking-text);
+        }
+
+        .status-courier {
+            background: var(--status-courier-bg);
+            color: var(--status-courier-text);
+        }
+
+        .status-delivery {
+            background: var(--status-delivery-bg);
+            color: var(--status-delivery-text);
+        }
+
+        .status-done {
+            background: var(--status-done-bg);
+            color: var(--status-done-text);
+        }
+
+        .status-default {
+            background: var(--status-default-bg);
+            color: var(--status-default-text);
+        }
+
+        .empty {
+            font-size: 20px;
+            color: var(--text);
+        }
 
         @media (max-width: 1200px) {
             .menu-area {

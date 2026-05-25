@@ -5,16 +5,70 @@
     <title>Главная страница клиента</title>
 
     <style>
+        :root {
+            --bg: #101010;
+            --text: #ffffff;
+            --border: #444444;
+
+            --card: #333333;
+            --card-shadow: rgba(0, 0, 0, 0.35);
+
+            --cabinet-bg: #3f3f46;
+            --cabinet-hover: #52525b;
+
+            --field-bg: #222222;
+            --field-text: #ffffff;
+            --field-border: #4b5563;
+
+            --select-bg: #7c3aed;
+            --select-hover: #6d28d9;
+
+            --order-bg: #059669;
+            --order-hover: #047857;
+
+            --price: #86efac;
+            --selected-bg: #1f2937;
+            --selected-border: #4b5563;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f5f5;
+                --text: #111111;
+                --border: #c7c7c7;
+
+                --card: #ffffff;
+                --card-shadow: rgba(0, 0, 0, 0.18);
+
+                --cabinet-bg: #e5e7eb;
+                --cabinet-hover: #d4d4d8;
+
+                --field-bg: #ffffff;
+                --field-text: #111111;
+                --field-border: #b8b8b8;
+
+                --select-bg: #7c3aed;
+                --select-hover: #6d28d9;
+
+                --order-bg: #15803d;
+                --order-hover: #166534;
+
+                --price: #15803d;
+                --selected-bg: #ffffff;
+                --selected-border: #b8b8b8;
+            }
+        }
+
         body {
             margin: 0;
-            background: #111;
-            color: white;
+            background: var(--bg);
+            color: var(--text);
             font-family: Arial, sans-serif;
         }
 
         .top {
             height: 70px;
-            border-bottom: 1px solid #444;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -22,8 +76,8 @@
         }
 
         .cabinet-btn {
-            background: #3f3f46;
-            color: white;
+            background: var(--cabinet-bg);
+            color: var(--text);
             text-decoration: none;
             padding: 10px 28px;
             border-radius: 22px;
@@ -31,7 +85,7 @@
         }
 
         .cabinet-btn:hover {
-            background: #52525b;
+            background: var(--cabinet-hover);
         }
 
         .client-name {
@@ -51,11 +105,11 @@
         }
 
         .dish-card {
-            background: #333;
+            background: var(--card);
             border-radius: 18px;
             padding: 18px;
             min-height: 360px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 12px var(--card-shadow);
         }
 
         .dish-photo {
@@ -74,12 +128,12 @@
         .price {
             font-size: 22px;
             font-weight: bold;
-            color: #86efac;
+            color: var(--price);
             margin-top: 12px;
         }
 
         .select-btn {
-            background: #7c3aed;
+            background: var(--select-bg);
             color: white;
             border: none;
             border-radius: 7px;
@@ -91,17 +145,17 @@
         }
 
         .select-btn:hover {
-            background: #6d28d9;
+            background: var(--select-hover);
         }
 
         .order-box {
             width: 520px;
-            background: #333;
+            background: var(--card);
             margin: 80px auto 40px auto;
             padding: 35px;
             border-radius: 22px;
             text-align: center;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 12px var(--card-shadow);
         }
 
         .order-box h2 {
@@ -113,27 +167,27 @@
             width: 90%;
             height: 42px;
             margin-bottom: 15px;
-            border: none;
+            border: 1px solid var(--field-border);
             border-radius: 6px;
             padding-left: 15px;
             font-size: 17px;
-            background: #f1f1f1;
-            color: black;
+            background: var(--field-bg);
+            color: var(--field-text);
         }
 
         .selected-dish {
-            background: #1f2937;
-            border: 1px solid #4b5563;
+            background: var(--selected-bg);
+            border: 1px solid var(--selected-border);
             border-radius: 10px;
             padding: 12px;
             margin: 15px auto;
             width: 90%;
-            color: #86efac;
+            color: var(--price);
             font-weight: bold;
         }
 
         .order-btn {
-            background: #059669;
+            background: var(--order-bg);
             color: white;
             border: none;
             border-radius: 8px;
@@ -145,7 +199,7 @@
         }
 
         .order-btn:hover {
-            background: #047857;
+            background: var(--order-hover);
         }
 
         .empty {
