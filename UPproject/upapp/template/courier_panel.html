@@ -115,7 +115,7 @@
 
             <p>Ул. {{ order.client.delivery_address }}</p>
             <p>ФИО: {{ order.client.full_name }}</p>
-            <p>Время: {{ order.order_date }}</p>
+            <p>Время: {{ selected_order.order_date|date:"d.m.Y H:i" }}</p>
             <p>Цена: {{ order.total_price }}</p>
 
             <form method="post">
@@ -157,7 +157,7 @@
 
             <p>Ул. {{ selected_order.client.delivery_address }}</p>
             <p>ФИО: {{ selected_order.client.full_name }}</p>
-            <p>Время: {{ selected_order.order_date }}</p>
+            <p>Время: {{ selected_order.order_date|date:"d.m.Y H:i" }}</p>
             <p>Цена: {{ selected_order.total_price }}</p>
 
             <form method="post">
