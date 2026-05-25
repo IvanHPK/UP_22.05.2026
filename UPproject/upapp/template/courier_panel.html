@@ -5,15 +5,61 @@
     <title>Курьер</title>
 
     <style>
+        :root {
+            --bg: #111111;
+            --text: #ffffff;
+            --panel: #333333;
+            --border: #555555;
+
+            --btn-select: #7c3aed;
+            --btn-select-hover: #6d28d9;
+
+            --btn-confirm: #16a34a;
+            --btn-confirm-hover: #15803d;
+
+            --status-new: #7c3aed;
+            --status-check: #8b5cf6;
+            --status-formed: #f97316;
+            --status-cooking: #fb923c;
+            --status-courier: #0d9488;
+            --status-delivery: #06b6d4;
+            --status-done: #16a34a;
+            --status-default: #555555;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f4f4f4;
+                --text: #111111;
+                --panel: #ffffff;
+                --border: #b8b8b8;
+
+                --btn-select: #7c3aed;
+                --btn-select-hover: #6d28d9;
+
+                --btn-confirm: #15803d;
+                --btn-confirm-hover: #166534;
+
+                --status-new: #7c3aed;
+                --status-check: #8b5cf6;
+                --status-formed: #ea580c;
+                --status-cooking: #f97316;
+                --status-courier: #0f766e;
+                --status-delivery: #0891b2;
+                --status-done: #15803d;
+                --status-default: #666666;
+            }
+        }
+
         body {
-            background: #111;
-            color: white;
+            background: var(--bg);
+            color: var(--text);
             font-family: Arial, sans-serif;
             margin: 0;
         }
 
         .top {
-            border-bottom: 1px solid #777;
+            border-bottom: 1px solid var(--border);
             padding: 15px 35px;
             display: flex;
             justify-content: space-between;
@@ -21,14 +67,19 @@
         }
 
         .top a {
-            color: white;
+            color: var(--text);
             text-decoration: none;
             font-size: 30px;
         }
 
-        .top h1 { margin: 0; font-size: 42px; }
+        .top h1 {
+            margin: 0;
+            font-size: 42px;
+        }
 
-        .container { padding: 25px; }
+        .container {
+            padding: 25px;
+        }
 
         .cards {
             display: grid;
@@ -38,16 +89,23 @@
         }
 
         .order-card {
-            background: #333;
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 15px;
             padding: 20px;
             min-height: 220px;
+            box-sizing: border-box;
         }
 
         .card-head {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+        }
+
+        .card-head h3 {
+            margin: 0;
         }
 
         .btn {
@@ -60,8 +118,23 @@
             cursor: pointer;
         }
 
-        .btn-select { background: #2563eb; color: white; }
-        .btn-confirm { background: #16a34a; color: white; }
+        .btn-select {
+            background: var(--btn-select);
+            color: white;
+        }
+
+        .btn-select:hover {
+            background: var(--btn-select-hover);
+        }
+
+        .btn-confirm {
+            background: var(--btn-confirm);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: var(--btn-confirm-hover);
+        }
 
         .status-badge {
             display: inline-block;
@@ -69,16 +142,65 @@
             border-radius: 15px;
             font-weight: bold;
             font-size: 14px;
+            white-space: nowrap;
         }
 
-        .status-new { background: #2563eb; color: white; }
-        .status-check { background: #7c3aed; color: white; }
-        .status-formed { background: #f59e0b; color: black; }
-        .status-cooking { background: #fb923c; color: black; }
-        .status-courier { background: #059669; color: white; }
-        .status-delivery { background: #06b6d4; color: black; }
-        .status-done { background: #16a34a; color: white; }
-        .status-default { background: #555; color: white; }
+        .status-new {
+            background: var(--status-new);
+            color: white;
+        }
+
+        .status-check {
+            background: var(--status-check);
+            color: white;
+        }
+
+        .status-formed {
+            background: var(--status-formed);
+            color: white;
+        }
+
+        .status-cooking {
+            background: var(--status-cooking);
+            color: white;
+        }
+
+        .status-courier {
+            background: var(--status-courier);
+            color: white;
+        }
+
+        .status-delivery {
+            background: var(--status-delivery);
+            color: white;
+        }
+
+        .status-done {
+            background: var(--status-done);
+            color: white;
+        }
+
+        .status-default {
+            background: var(--status-default);
+            color: white;
+        }
+
+        @media (max-width: 1100px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .top {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -115,7 +237,7 @@
 
             <p>Ул. {{ order.client.delivery_address }}</p>
             <p>ФИО: {{ order.client.full_name }}</p>
-            <p>Время: {{ selected_order.order_date|date:"d.m.Y H:i" }}</p>
+            <p>Время: {{ order.order_date|date:"d.m.Y H:i" }}</p>
             <p>Цена: {{ order.total_price }}</p>
 
             <form method="post">
